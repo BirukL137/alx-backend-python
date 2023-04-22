@@ -39,4 +39,4 @@ class TestAccessNestedMap(unittest.TestCase):
         """
         with self.assertRaises(exception_type) as context:
             access_nested_map(nested_map, path)
-        self.assertEqual(exception_type, context.exception)
+            self.assertEqual(exception_type, str(context.exception))
