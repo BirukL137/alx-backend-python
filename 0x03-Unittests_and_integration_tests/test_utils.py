@@ -56,8 +56,9 @@ class TestGetJson(unittest.TestCase):
         This function tests thar utils.get_json returns the expected
         result.
         """
-        Mock().json.return_value = test_payload
-        with patch('requests.get', return_val=Mock()):
+        mock_resp = Mock()
+        mock_resp.json.return_value = test_payload
+        with patch('requests.get', return_val=mock_resp):
             result = utils.get_json(test_url)
             self.assertEqual(result, test_payload)
-            Mock().json.assert_called_once()
+            mock_resp.json.assert_called_once()
