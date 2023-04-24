@@ -12,16 +12,16 @@ from parameterized import parameterized
 class TestGithubOrgClient(unittest.TestCase):
     """ A Test class for test_org method. """
     @parameterized.expand([
-        ("google",),
-        ("abc",)
+        ("google", {"google": True}),
+        ("abc", {"abc": True})
     ])
     @patch('client.get_json')
-    def test_org(self, val, mock_get_json):
+    def test_org(self, input, result, mock_get_json):
         """
         A test_org method with two arguments that is extended from
         TestGithubOrgClient class with input, expect are the arguments.
         """
-        client = GithubOrgClient(val)
-        client.org()
+        mock_get_json.return_value = result
+        self.assertEqual(GithubOrgClient(input), result)
         mock_get_json.assert_called_once_with(
-            "https://api.github.com/orgs/" + val)
+            f"https://api.github.com/orgs/{result}")
