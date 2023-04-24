@@ -63,8 +63,8 @@ class TestGithubOrgClient(unittest.TestCase):
             json_mock.assert_called_once()
 
         @parameterized.expand([
-            ({"license": {"key": "my_license"}}, "my_license"),
-            ({"license": {"key": "other_license"}}, "my_license")
+            ({"license": {"key": "my_license"}}, "my_license", True),
+            ({"license": {"key": "other_license"}}, "my_license", False)
         ])
         def test_has_license(self, repo, license_key, expected_output):
             """ A method that tests has_license function from client file. """
