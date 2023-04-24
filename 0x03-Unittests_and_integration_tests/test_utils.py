@@ -56,9 +56,6 @@ class TestGetJson(unittest.TestCase):
         This function tests thar utils.get_json returns the expected
         result.
         """
-        test_url = "http://example.com"
-        test_payload = {"payload": True}
-
         Mock().json.return_value = test_payload
         with patch('requestes.get', ret_val=Mock()):
             result = utils.get_json(test_url)
