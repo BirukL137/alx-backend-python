@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """
 Parameterize a unit test
+Mock HTTP calls
 """
 
 import unittest
+import utils
 from parameterized import parameterized
 from utils import access_nested_map
+from unittest.mock import patch, Mock
 
 
 class TestAccessNestedMap(unittest.TestCase):
@@ -40,3 +43,27 @@ class TestAccessNestedMap(unittest.TestCase):
         with self.assertRaises(exception_type) as context:
             access_nested_map(nested_map, path)
             self.assertEqual(exception_type, str(context.exception))
+
+
+class TestGetJson(unittest.TestCase):
+    """ Test class for utils.get_json function """
+    @patch('utils.requests.get')
+    def test_get_json(self, mock_get):
+        """
+        This function tests thar utils.get_json returns the expected
+        result.
+        """
+        test_url = "http://example.com"
+        test_payload = {"payload": True}
+        mock_get.return_value.json.return_value = test_payload
+        result = utils.get_json(test_url)
+        self.assertEqual(result, test_payload)
+
+        test_url = "http://holberton.io"
+        test_payload = {"payload": False}
+        mock_get.return_value.json.return_value = test_payload
+        result = utils.get_json(test_url)
+        self.assertEqual(result, test_payload)
+
+        mock_get.assert_called_with("http://example.com")
+        mock_get.assert_called_with("http://holberton.io")
