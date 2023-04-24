@@ -2,6 +2,7 @@
 """
 Parameterize and patch as decorators.
 Mocking a property.
+More patching/
 """
 
 import unittest
@@ -30,8 +31,32 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos_url(self):
         """ Test the result of public_repos_url """
         with patch(
-            'client.GithubOrgClient.org', new_callable=PropertyMock) as mock:
+                    'client.GithubOrgClient.org',
+                    new_callable=PropertyMock) as mock:
             mock.return_value = {"repos_url": "World"}
             test_class = GithubOrgClient('check')
             result = test_class._public_repos_url
             self.assertEqual(result, mock.return_value["repos_url"])
+
+    @patch('client.get_json')
+    def test_public_repos(self, json_mock):
+        """
+        A method that tests the public repos
+        """
+        json_mock.return_value = [{"name": "Github"}, {"name": "Instagram"}]
+
+        with patch('client.GithubOrgClient._public_repos_url',
+                   new_callable=PropertyMock) as mock_repos:
+
+            mock_repos.return_value = "hello/world"
+            test_class = GithubOrgClient('test')
+            result = test_class.public_repos()
+
+            test = []
+            for i in [{"name": "Github"}, {"name": "Instagram"}]:
+                test.append(i["name"])
+
+            self.assertEqual(result, test)
+
+            mock_repos.assert_called_once()
+            json_mock.assert_called_once()
