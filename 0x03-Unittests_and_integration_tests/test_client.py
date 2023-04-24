@@ -8,6 +8,7 @@ from client import GithubOrgClient
 from unittest.mock import patch
 from parameterized import parameterized
 
+
 class TestGithubOrgClient(unittest.TestCase):
     """ A Test class for test_org method. """
     @parameterized.expand([
@@ -22,4 +23,5 @@ class TestGithubOrgClient(unittest.TestCase):
         """
         client = GithubOrgClient(val)
         client.org()
-        mock_get_json.assert_called_once_with("https://api.github.com/orgs/" + val)
+        mock_get_json.assert_called_once_with(
+            "https://api.github.com/orgs/" + val)
