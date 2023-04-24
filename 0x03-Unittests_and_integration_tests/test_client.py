@@ -6,6 +6,7 @@ Parameterize and patch as decorators.
 import unittest
 from client import GithubOrgClient
 from unittest.mock import patch
+from parameterized import parameterized
 
 class TestGithubOrgClient(unittest.TestCase):
     """ A Test class for test_org method. """
